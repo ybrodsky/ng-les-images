@@ -1,0 +1,1 @@
+export * from './src/app/modules/les-image/les-image.module';
