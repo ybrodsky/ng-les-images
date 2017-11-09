@@ -5,7 +5,10 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html'
 })
 export class AppComponent {
+  images: any = [];
+
   onSelected(data) {
+  	this.images = data;
   	console.log('Listo', data);
   }
 }

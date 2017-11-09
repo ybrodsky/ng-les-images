@@ -9,7 +9,7 @@ import { NgbdModalContent } from './modal-content';
   selector: 'les-image',
   template: `
   	<div class="form-group">
-			<button class="btn btn-outline-primary" (click)="open()">
+			<button class="btn btn-outline-primary" (click)="open()" type="button">
 				Importar imagenes
 			</button>
 		</div>

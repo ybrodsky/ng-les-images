@@ -7,18 +7,22 @@ import {
 }                                            from '@angular/http';
 
 import { LesImageComponent } from './les-image.component';
+import { LesImageItemComponent } from './les-image-item.component';
+
 import { NgbdModalContent } from './modal-content';
 import { ImageService } from './les-image.service';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule
+    HttpModule,
+    NgbModule.forRoot(),
   ],
-  declarations: [LesImageComponent, NgbdModalContent],
-  exports: [LesImageComponent],
+  declarations: [LesImageComponent, LesImageItemComponent, NgbdModalContent],
+  exports: [LesImageComponent, LesImageItemComponent],
   entryComponents: [NgbdModalContent],
   providers: [ImageService]
 })
