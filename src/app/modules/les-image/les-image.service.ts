@@ -8,14 +8,22 @@ export class ImageService {
   constructor(@Inject('config') private config:any, private http: Http) {  }
 
   fetch(query): any {
-  	return this.http.get(this.config.api, {search: query}).toPromise();
+  	return this.http.get(this.getApiURL(), {search: query}).toPromise();
+  }
+
+  save(data): any {
+    return this.http.post(this.getApiURL(), data).toPromise();
+  }
+
+  getApiBaseURL(): string {
+    return this.config.api;
   }
 
   getApiURL(): string {
-  	return this.config.api;
+  	return this.config.api + 'api/images';
   }
 
   getImageBaseURL(): string {
-  	return this.config.imageSrc;
+  	return this.config.aws;
   }
 }

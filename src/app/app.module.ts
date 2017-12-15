@@ -15,7 +15,10 @@ import { AppComponent } from './app.component';
     FormsModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
-    LesImageModule.forRoot({api: 'http://localhost:3006/api/images', imageSrc: 'https://dy7qn3s3w7.execute-api.sa-east-1.amazonaws.com/dev/img/200x200/'}),
+    LesImageModule.forRoot({
+      api: 'http://localhost:3006/',
+      aws: 'https://95yngqibu6.execute-api.sa-east-1.amazonaws.com/dev/'
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

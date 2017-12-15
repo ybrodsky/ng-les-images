@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Http, URLSearchParams, Headers } from '@angular/http';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
@@ -26,22 +26,55 @@ import { ImageService } from './les-image.service';
 })
 export class NgbdModalContent {
 	@Output() onDataSubmitted = new EventEmitter<any>();
+  @ViewChild('t') t;
 
-  selectedImages: any = {};
-  images: Array<any> = [];
-  total: number = 0;
-  page: number = 1;
+  customStyle = {clearButton: {"display": "none"}};
+  selectedImages: any = {}; //imagenes que se seleccionaron
+  tempImages: Array<any> = []; //imagenes temporales que aun no subidos a aws
+  images: Array<any> = []; //imagenes del listado que paginamos
+  total: number = 0; //cantidad de imagenes totales
+  page: number = 1; //paginas
   perPage: number = 12;
 
   Math: any = Math;
-  params: any = {
+  params: any = { //parametros del filtro
   	tags: '',
-  	all: true
+  	all: true,
+    bucket: 'les-images-main'
   }
   baseURL: string;
+  imageUploadURL: string;
+  apiURL: string;
 
   constructor(public activeModal: NgbActiveModal, private imageService: ImageService) {
   	this.baseURL = imageService.getImageBaseURL();
+    this.apiURL = imageService.getApiBaseURL();
+    this.imageUploadURL = imageService.getApiURL() + '/upload';
+  }
+
+  onUploadFinished(data: any) {
+    let response = JSON.parse(data.serverResponse._body);
+
+    this.tempImages.push({
+      filename: response.filename,
+      url: this.apiURL + 'tmp/' + response.filename,
+      tags: [],
+      bucket: this.params.bucket || 'les-images-main'
+    });
+  }
+
+  onRemoved(data: any) {
+    let name = JSON.parse(data.serverResponse._body).filename;
+
+    let index = this.tempImages.findIndex((item) => {
+      return item.filename === name;
+    });
+
+    this.tempImages.splice(index, 1);
+  }
+
+  getImageURL(image): string {
+    return `${this.baseURL}r/${image.bucket}/200x200/${image.name}`;
   }
 
   isImageSelected(image) {
@@ -59,18 +92,37 @@ export class NgbdModalContent {
   	this.selectedImages[image.name] = image;
   }
 
+  onSubmit() {
+    this.imageService.save(this.tempImages).then((response) => {
+      let uploadedImages = JSON.parse(response._body);
+
+      uploadedImages.forEach(image => {
+        this.selectImage(image);
+        this.images.unshift(image);
+        this.tempImages = [];
+      });
+
+      this.t.select('importar');
+    });
+  }
+
   search(page) {
   	this.page = page;
 
   	let query: URLSearchParams = new URLSearchParams();
+    let where: any = {};
   	query.set('limit', String(this.perPage));
   	query.set('skip', String(this.perPage * (page - 1)));
 
   	if(this.params.tags) {
-  		query.set('where', JSON.stringify({
-  			tags: {'$all': this.params.tags.split(',')}
-  		}))
+      where.tags = {'$all': this.params.tags.split(',')};
   	}
+
+    if(this.params.bucket) {
+      where.bucket = this.params.bucket;
+    }
+
+    query.set('where', JSON.stringify(where));
 
   	this.imageService.fetch(query)
   		.then((res) => {

@@ -1,17 +1,21 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule }  from '@angular/forms';
+import { NgModule, ModuleWithProviders }         from '@angular/core';
+import { CommonModule }                          from '@angular/common';
+import { BrowserModule }                         from '@angular/platform-browser';
+import { BrowserAnimationsModule }               from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule }      from '@angular/forms';
 import {
   Http, HttpModule,
   RequestOptions, XHRBackend
-}                                            from '@angular/http';
+}                                                from '@angular/http';
 
-import { LesImageComponent } from './les-image.component';
-import { LesImageItemComponent } from './les-image-item.component';
+import { LesImageComponent }                     from './les-image.component';
+import { LesImageItemComponent }                 from './les-image-item.component';
 
-import { NgbdModalContent } from './modal-content';
-import { ImageService } from './les-image.service';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbdModalContent }                      from './modal-content';
+import { ImageService }                          from './les-image.service';
+import { NgbModule }                             from '@ng-bootstrap/ng-bootstrap';
+import { ImageUploadModule }                     from "angular2-image-upload";
+import { TagInputModule }                        from 'ngx-chips';
 
 @NgModule({
   imports: [
@@ -20,6 +24,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     HttpModule,
     NgbModule.forRoot(),
+    ImageUploadModule.forRoot(),
+    TagInputModule, BrowserAnimationsModule
   ],
   declarations: [LesImageComponent, LesImageItemComponent, NgbdModalContent],
   exports: [LesImageComponent, LesImageItemComponent],

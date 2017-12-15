@@ -9,7 +9,7 @@ import { NgbdModalContent } from './modal-content';
   selector: 'les-image-item',
   template: `
     <div class="les-image-item">
-      <img style="width: 100%" src="{{baseURL}}{{image.name}}"/>
+      <img style="width: 100%" src="{{getImageURL(image)}}"/>
     </div>
   `,
   styles: [`
@@ -29,5 +29,9 @@ export class LesImageItemComponent {
 
   constructor(private imageService: ImageService) {
     this.baseURL = imageService.getImageBaseURL();
+  }
+
+  getImageURL(image): string {
+    return `${this.baseURL}r/${image.bucket}/200x200/${image.name}`;
   }
 }

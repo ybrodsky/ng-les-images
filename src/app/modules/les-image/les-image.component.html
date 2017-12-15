@@ -1,76 +1,183 @@
 <div class="modal-header">
-  <h4 class="modal-title">Importar imagenes</h4>
+  <h4 class="modal-title">Les Images</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div class="modal-body">
-	<div class="card">
-		<div class="card-block p-3">
-			<form #imagesForm="ngForm" (ngSubmit)="search(1)"
-				novalidate
-			>
-		    <div class="row">
-		    	<div class="col-md-10">
-						<div class="form-group">
-							<label>Tags</label>
-							<input
-								type="text"
-								class="form-control"
-								name="name"
-								#name="ngModel"
-								[(ngModel)]="params.tags"
-								autocomplete="off"
-							/>
-							<p class="help-block">Separados por coma</p>
+	<ngb-tabset [justify]="true" #t="ngbTabset">
+	  <ngb-tab id="importar">
+	  	<ng-template ngbTabTitle><i class="fa fa-download"></i> Importar imágenes</ng-template>
+	    <ng-template ngbTabContent>
+	    	<div class="row mt-3">
+	    		<div class="col-md-12">
+		    		<div class="card">
+							<div class="card-block p-3">
+								<form #imagesForm="ngForm" (ngSubmit)="search(1)"
+									novalidate
+								>
+							    <div class="row">
+	    							<div class="col-md-5">
+											<div class="form-group">
+												<label>Bucket</label>
+												<select
+													class="form-control"
+													name="bucket"
+													#bucket="ngModel"
+													[(ngModel)]="params.bucket"
+												>
+													<option value="">Indistinto</option>
+													<option value="les-images-main">Principal</option>
+													<option value="les-images-activities">Actividades</option>
+													<option value="les-images-misc">Miscelaneo</option>
+												</select>
+											</div>
+										</div>
+							    	<div class="col-md-5">
+											<div class="form-group">
+												<label>Tags</label>
+												<input
+													type="text"
+													class="form-control"
+													name="name"
+													#name="ngModel"
+													[(ngModel)]="params.tags"
+													autocomplete="off"
+												/>
+												<p class="help-block">Separados por coma</p>
+											</div>
+							    	</div>
+							    	<div class="col-md-2">
+							    		<div class="form-group">
+							    			<label style="display: block">&nbsp;</label>
+							      		<button class="btn btn-outline-dark btn-block" type="submit">
+							      			Buscar
+							      		</button>
+							    		</div>
+							    	</div>
+							    </div>
+							  </form>
+							</div>
 						</div>
-		    	</div>
-		    	<div class="col-md-2">
-		    		<div class="form-group">
-		    			<label style="display: block">&nbsp;</label>
-		      		<button class="btn btn-outline-dark btn-block" type="submit">
-		      			Buscar
-		      		</button>
-		    		</div>
-		    	</div>
-		    </div>
-		  </form>
-		</div>
-	</div>
 
-  <hr/>
+					  <hr/>
 
-  <div class="row">
-  	<div class="col-md-12">
-  		<div class="alert alert-info text-center" [hidden]="images.length">
-  			No se encontraron imagenes
-  		</div>
+					  <div class="row">
+					  	<div class="col-md-12">
+					  		<div class="alert alert-info text-center" [hidden]="images.length">
+					  			No se encontraron imagenes
+					  		</div>
 
-  		<div class="row">
-  			<div class="col-md-3 mb-2" *ngFor="let image of images">
-  				<div class="image" [ngClass]="{'image-selected': isImageSelected(image)}" (click)="selectImage(image)">
-  					<img style="width: 100%" src="{{baseURL}}{{image.name}}"/>
-						<i class="fa fa-check-circle image-icon"></i>
+					  		<div class="row">
+					  			<div class="col-md-3 mb-2" *ngFor="let image of images">
+					  				<div class="image" [ngClass]="{'image-selected': isImageSelected(image)}" (click)="selectImage(image)">
+					  					<img style="width: 100%" src="{{getImageURL(image)}}"/>
+											<i class="fa fa-check-circle image-icon"></i>
+										</div>
+					  			</div>
+					  		</div>
+					  	</div>
+					  </div>
+					  <hr/>
+						<div class="">
+						  <ul class="pagination justify-content-end">
+						    <li class="page-item" [class.disabled]="page == 1">
+						    	<a class="page-link" (click)="page > 1 && search(page - 1)">
+						    		<<
+					    		</a>
+					  		</li>
+						    <li class="page-item" [class.disabled]="page == Math.ceil(total / perPage)">
+						    	<a class="page-link"(click)="page < total / perPage && search(page + 1)">
+						    		>>
+					    		</a>
+					  		</li>
+						  </ul>
+						</div>
 					</div>
-  			</div>
-  		</div>
-  	</div>
-  </div>
-  <hr/>
-	<div class="">
-	  <ul class="pagination justify-content-end">
-	    <li class="page-item" [class.disabled]="page == 1">
-	    	<a class="page-link" (click)="page > 1 && search(page - 1)">
-	    		<<
-    		</a>
-  		</li>
-	    <li class="page-item" [class.disabled]="page == Math.ceil(total / perPage)">
-	    	<a class="page-link"(click)="page < total / perPage && search(page + 1)">
-	    		>>
-    		</a>
-  		</li>
-	  </ul>
-	</div>
+				</div>
+	    </ng-template>
+	  </ngb-tab>
+	  <ngb-tab id="cargar">
+	    <ng-template ngbTabTitle><i class="fa fa-upload"></i> Cargar nuevas</ng-template>
+	    <ng-template ngbTabContent>
+	    	<div class="row mt-3">
+	    		<div class="col-md-12">
+	    			<form
+							#imagesForm="ngForm"
+							(ngSubmit)="imagesForm.form.valid && tempImages.length && onSubmit(imagesForm)"
+							novalidate
+						>
+
+							<div class="form-group">
+								<image-upload
+									url="{{imageUploadURL}}"
+									(uploadFinished)="onUploadFinished($event)"
+									(removed)="onRemoved($event)"
+									[style]="customStyle"
+									[buttonCaption]="'Seleccionar imagenes'"
+								  [dropBoxMessage]="'Soltar imagenes (jpg, png, gif)'"
+								  [extensions]="['jpg','png','gif']"
+								>
+								</image-upload>
+							</div>
+
+							<div class="row mb-3" *ngFor="let image of tempImages; let i = index">
+								<div class="col-md-2">
+									<img src="{{image.url}}" style="max-width: 100%"/>
+								</div>
+								<div class="col-md-10">
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Tags</label>
+												<tag-input
+													required
+													#tags="ngModel"
+													name="tags"
+													[(ngModel)]="image.tags"
+													theme="bootstrap"
+													separatorKeyCodes="[188, 13, 39]"
+													addOnBlur="true"
+													addOnPaste="true"
+													modelAsStrings="true"
+													placeholder=""
+													[ngClass]="{'is-invalid': tags.invalid && imagesForm.submitted}"
+												>
+												</tag-input>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Bucket</label>
+												<select
+													class="form-control"
+													name="bucket_{{i}}"
+													#bucket="ngModel"
+													[(ngModel)]="image.bucket"
+													[ngClass]="{'is-invalid': bucket.invalid && imagesForm.submitted}"
+													required
+												>
+													<option value="les-images-main">Principal</option>
+													<option value="les-images-activities">Actividades</option>
+													<option value="les-images-misc">Miscelaneo</option>
+												</select>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<hr/>
+
+							<div class="form-group">
+								<button type="submit" class="btn btn-dark btn-block">Cargar</button>
+							</div>
+						</form>
+	    		</div>
+	    	</div>
+	    </ng-template>
+	  </ngb-tab>
+	</ngb-tabset>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-dark" (click)="close()">TERMINAR</button>
