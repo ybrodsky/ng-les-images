@@ -17,7 +17,8 @@ import { AppComponent } from './app.component';
     NgbModule.forRoot(),
     LesImageModule.forRoot({
       api: 'http://localhost:3006/',
-      aws: 'https://95yngqibu6.execute-api.sa-east-1.amazonaws.com/dev/'
+      aws: 'https://95yngqibu6.execute-api.sa-east-1.amazonaws.com/dev/',
+      bucket: 'les-images-misc'
     }),
   ],
   providers: [],

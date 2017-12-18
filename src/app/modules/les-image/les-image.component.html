@@ -109,62 +109,49 @@
 						>
 
 							<div class="form-group">
-								<image-upload
-									url="{{imageUploadURL}}"
-									(uploadFinished)="onUploadFinished($event)"
-									(removed)="onRemoved($event)"
-									[style]="customStyle"
-									[buttonCaption]="'Seleccionar imagenes'"
-								  [dropBoxMessage]="'Soltar imagenes (jpg, png, gif)'"
-								  [extensions]="['jpg','png','gif']"
-								>
-								</image-upload>
+								<input type="file" ng2FileSelect [uploader]="uploader" multiple (change)="uploader.uploadAll()" />
 							</div>
-
-							<div class="row mb-3" *ngFor="let image of tempImages; let i = index">
-								<div class="col-md-2">
-									<img src="{{image.url}}" style="max-width: 100%"/>
-								</div>
-								<div class="col-md-10">
-									<div class="row">
-										<div class="col-md-6">
-											<div class="form-group">
-												<label>Tags</label>
-												<tag-input
-													required
-													#tags="ngModel"
-													name="tags"
-													[(ngModel)]="image.tags"
-													theme="bootstrap"
-													separatorKeyCodes="[188, 13, 39]"
-													addOnBlur="true"
-													addOnPaste="true"
-													modelAsStrings="true"
-													placeholder=""
-													[ngClass]="{'is-invalid': tags.invalid && imagesForm.submitted}"
-												>
-												</tag-input>
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<label>Bucket</label>
-												<select
-													class="form-control"
-													name="bucket_{{i}}"
-													#bucket="ngModel"
-													[(ngModel)]="image.bucket"
-													[ngClass]="{'is-invalid': bucket.invalid && imagesForm.submitted}"
-													required
-												>
-													<option value="les-images-main">Principal</option>
-													<option value="les-images-activities">Actividades</option>
-													<option value="les-images-misc">Miscelaneo</option>
-												</select>
-											</div>
-										</div>
+							<div class="row my-2">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Tags</label>
+										<tag-input
+											required
+											#tags="ngModel"
+											name="tags"
+											[(ngModel)]="params.tags"
+											theme="bootstrap"
+											separatorKeyCodes="[188, 13, 39]"
+											addOnBlur="true"
+											addOnPaste="true"
+											modelAsStrings="true"
+											placeholder=""
+											[ngClass]="{'is-invalid': tags.invalid && imagesForm.submitted}"
+										>
+										</tag-input>
 									</div>
-
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Bucket</label>
+										<select
+											class="form-control"
+											name="bucket"
+											#bucket="ngModel"
+											[(ngModel)]="params.bucket"
+											[ngClass]="{'is-invalid': bucket.invalid && imagesForm.submitted}"
+											required
+										>
+											<option value="les-images-main">Principal</option>
+											<option value="les-images-activities">Actividades</option>
+											<option value="les-images-misc">Miscelaneo</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-md-2" *ngFor="let image of tempImages; let i = index">
+									<img src="{{image.url}}" style="max-width: 100%"/>
 								</div>
 							</div>
 							<hr/>

@@ -14,7 +14,7 @@ import { LesImageItemComponent }                 from './les-image-item.componen
 import { NgbdModalContent }                      from './modal-content';
 import { ImageService }                          from './les-image.service';
 import { NgbModule }                             from '@ng-bootstrap/ng-bootstrap';
-//import { ImageUploadModule }                     from "angular2-image-upload";
+import { FileUploadModule } from 'ng2-file-upload';
 import { TagInputModule }                        from 'ngx-chips';
 
 @NgModule({
@@ -24,7 +24,7 @@ import { TagInputModule }                        from 'ngx-chips';
     ReactiveFormsModule,
     HttpModule,
     NgbModule.forRoot(),
-    //ImageUploadModule.forRoot(),
+    FileUploadModule,
     TagInputModule, BrowserAnimationsModule
   ],
   declarations: [LesImageComponent, LesImageItemComponent, NgbdModalContent],

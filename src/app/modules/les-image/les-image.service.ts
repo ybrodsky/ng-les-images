@@ -26,4 +26,8 @@ export class ImageService {
   getImageBaseURL(): string {
   	return this.config.aws;
   }
+
+  getDefaultBucket(): string {
+    return this.config.bucket;
+  }
 }

@@ -3,6 +3,7 @@ import { Http, URLSearchParams, Headers } from '@angular/http';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { ImageService } from './les-image.service';
+import { FileUploader, FileUploaderOptions } from 'ng2-file-upload';
 
 @Component({
   selector: 'ngbd-modal-content',
@@ -28,7 +29,8 @@ export class NgbdModalContent {
 	@Output() onDataSubmitted = new EventEmitter<any>();
   @ViewChild('t') t;
 
-  customStyle = {clearButton: {"display": "none"}};
+  uploader:FileUploader;
+
   selectedImages: any = {}; //imagenes que se seleccionaron
   tempImages: Array<any> = []; //imagenes temporales que aun no subidos a aws
   images: Array<any> = []; //imagenes del listado que paginamos
@@ -50,10 +52,25 @@ export class NgbdModalContent {
   	this.baseURL = imageService.getImageBaseURL();
     this.apiURL = imageService.getApiBaseURL();
     this.imageUploadURL = imageService.getApiURL() + '/upload';
+
+    this.uploader  = new FileUploader({
+      url: this.imageUploadURL,
+      allowedFileType: ['image']
+    });
+
+    this.params.bucket = imageService.getDefaultBucket();
   }
 
-  onUploadFinished(data: any) {
-    let response = JSON.parse(data.serverResponse._body);
+  ngOnInit() {
+     this.uploader.onAfterAddingFile = (file: any) => { file.withCredentials = false; };
+
+    this.uploader.onCompleteItem = ((item, response) => {
+      this.onUploadFinished(item, response);
+    });
+  }
+
+  onUploadFinished(item, data: any) {
+    let response = JSON.parse(data);
 
     this.tempImages.push({
       filename: response.filename,
@@ -93,6 +110,13 @@ export class NgbdModalContent {
   }
 
   onSubmit() {
+    this.tempImages = this.tempImages.map((i) => {
+      i.tags = this.params.tags;
+      i.bucket = this.params.bucket;
+
+      return i;
+    });
+
     this.imageService.save(this.tempImages).then((response) => {
       let uploadedImages = JSON.parse(response._body);
 
