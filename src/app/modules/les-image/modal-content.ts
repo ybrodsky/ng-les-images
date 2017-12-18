@@ -3,7 +3,7 @@ import { Http, URLSearchParams, Headers } from '@angular/http';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { ImageService } from './les-image.service';
-import { FileUploader } from 'ng2-file-upload/file-upload/file-uploader.class';
+//import { FileUploader } from 'ng2-file-upload/file-upload/file-uploader.class';
 
 @Component({
   selector: 'ngbd-modal-content',
@@ -29,7 +29,7 @@ export class NgbdModalContent {
 	@Output() onDataSubmitted = new EventEmitter<any>();
   @ViewChild('t') t;
 
-  uploader:FileUploader;
+  //uploader:FileUploader;
 
   selectedImages: any = {}; //imagenes que se seleccionaron
   tempImages: Array<any> = []; //imagenes temporales que aun no subidos a aws
@@ -53,20 +53,20 @@ export class NgbdModalContent {
     this.apiURL = imageService.getApiBaseURL();
     this.imageUploadURL = imageService.getApiURL() + '/upload';
 
-    this.uploader  = new FileUploader({
+    /*this.uploader  = new FileUploader({
       url: this.imageUploadURL,
       allowedFileType: ['image']
-    });
+    });*/
 
     this.params.bucket = imageService.getDefaultBucket();
   }
 
   ngOnInit() {
-     this.uploader.onAfterAddingFile = (file: any) => { file.withCredentials = false; };
+    /*this.uploader.onAfterAddingFile = (file: any) => { file.withCredentials = false; };
 
     this.uploader.onCompleteItem = ((item, response) => {
       this.onUploadFinished(item, response);
-    });
+    });*/
   }
 
   onUploadFinished(item, data: any) {
