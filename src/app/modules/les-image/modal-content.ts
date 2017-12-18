@@ -3,7 +3,7 @@ import { Http, URLSearchParams, Headers } from '@angular/http';
 import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { ImageService } from './les-image.service';
-import { FileUploader, FileUploaderOptions } from 'ng2-file-upload';
+import { FileUploader } from 'ng2-file-upload/file-upload/file-uploader.class';
 
 @Component({
   selector: 'ngbd-modal-content',
