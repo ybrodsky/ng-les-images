@@ -1,6 +1,10 @@
 {
   "$schema": "./node_modules/ng-packagr/ng-package.schema.json",
   "lib": {
-    "entryFile": "public_api.ts"
+    "entryFile": "public_api.ts",
+    "externals": {
+    	"ng2-file-upload/file-upload/file-upload.module": "ng2-file-upload/file-upload/file-upload.module",
+    	"ng2-file-upload/file-upload/file-uploader.class": "ng2-file-upload/file-upload/file-uploader.class"
+    }
   }
 }
