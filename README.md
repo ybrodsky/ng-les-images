@@ -3,7 +3,8 @@
   	...
     LesImageModule.forRoot({
     	api: 'image api url',
-    	imageSrc: 'lambda url'
+    	aws: 'lambda url',
+      bucket: 'bucket por defecto'
   	}),
   ],
 ```
