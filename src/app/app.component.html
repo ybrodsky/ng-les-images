@@ -2,12 +2,12 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div>Main</div>
-			<les-image (onSelected)="onSelected($event)"></les-image>
+			<les-image (onSelected)="onSelected($event)" [btnClass]="'btn btn-primary'"></les-image>
 			<hr/>
 
 			<div class="row">
 				<div *ngFor="let image of images" class="col-md-3 mb-2">
-					<les-image-item [image]="image"></les-image-item>
+					<les-image-item [image]="image" [containerClass]="'les-image-item'"></les-image-item>
 				</div>
 			</div>
 		</div>

@@ -9,7 +9,7 @@ import { NgbdModalContent } from './modal-content';
   selector: 'les-image',
   template: `
   	<div class="form-group">
-			<button class="btn btn-outline-primary" (click)="open()" type="button">
+			<button (click)="open()" type="button" [class]="btnClass">
 				Importar imagenes
 			</button>
 		</div>
@@ -20,6 +20,7 @@ import { NgbdModalContent } from './modal-content';
 })
 export class LesImageComponent implements OnInit {
 	@Output() onSelected = new EventEmitter<any>();
+  @Input() btnClass: string = 'btn btn-outline-primary';
 
   constructor(private modalService: NgbModal) {}
 

@@ -8,7 +8,7 @@ import { NgbdModalContent } from './modal-content';
 @Component({
   selector: 'les-image-item',
   template: `
-    <div class="les-image-item">
+    <div [class]="containerClass">
       <img style="width: 100%" src="{{getImageURL(image)}}"/>
     </div>
   `,
@@ -17,14 +17,12 @@ import { NgbdModalContent } from './modal-content';
       width: inherit;
       cursor: pointer;
     }
-
-    .les-image-item:hover {
-      border: 5px solid rgb(66, 133, 244);
-    }
   `]
 })
 export class LesImageItemComponent {
 	@Input() image: any;
+  @Input() containerClass: string = 'les-image-item';
+
   baseURL: string;
 
   constructor(private imageService: ImageService) {
