@@ -12,7 +12,10 @@ export class ImageService {
   }
 
   save(data): any {
-    return this.http.post(this.getApiURL(), data).toPromise();
+    const headers = new Headers();
+    headers.append('jwt', localStorage.getItem('token'));
+
+    return this.http.post(this.getApiURL(), data, { headers }).toPromise();
   }
 
   getApiBaseURL(): string {
